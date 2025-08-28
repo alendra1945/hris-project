@@ -6,7 +6,7 @@ type User = {
   avatar: string;
 };
 
-type Team = {
+export type Team = {
   name: string;
   logo: React.ElementType;
   plan: string;
@@ -18,19 +18,19 @@ type BaseNavItem = {
   icon?: React.ElementType;
 };
 
-type NavLink = BaseNavItem & {
+export type NavLink = BaseNavItem & {
   url: LinkProps['href'] | (string & {});
   items?: never;
 };
 
-type NavCollapsible = BaseNavItem & {
+export type NavCollapsible = BaseNavItem & {
   items: (BaseNavItem & { url: LinkProps['href'] | (string & {}) })[];
   url?: never;
 };
 
-type NavItem = NavCollapsible | NavLink;
+export type NavItem = NavCollapsible | NavLink;
 
-type NavGroup = {
+export type NavGroup = {
   title: string;
   items: NavItem[];
 };

@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { useCallback, useEffect } from 'react';
 import { Switch } from '../ui/switch';
 import { useReportTemplateTableData } from './table-data';
-
+import { z } from 'zod';
 const defaultValues: ReportTemplate = {
   name: '',
   description: '',
@@ -44,8 +44,8 @@ export const CreateReportingTemplateModal = () => {
 
   const { data: reportTemplateDetail } = useDetailReportTemplateQuery(isEdit ? reportTemplateId : undefined);
 
-  const form = useForm({
-    resolver: zodResolver(ReportTemplateSchema),
+  const form = useForm<z.infer<typeof ReportTemplateSchema>>({
+    resolver: standardSchemaResolver(ReportTemplateSchema),
     defaultValues,
   });
 

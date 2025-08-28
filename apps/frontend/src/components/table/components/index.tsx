@@ -1,16 +1,16 @@
 'use client';
-import { useEffect, useRef } from 'react';
 import { Table, TableHead, TableHeader, TableProps, TableRow } from '@/components/ui/table';
-import { DataTableHeader } from './data-table-header';
-import { DataTableBody } from './data-table-body';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { IAdvancedTableProps } from '../table-provider';
 import { useTableDataContext } from '@/hooks/use-table-hooks';
-import { cn } from '@/lib/utils';
-import { DataTableSkeleton, DataTableSkeletonProps } from './data-table-skeleton';
-import { DataTablePagination } from './data-table-pagination';
 import createEventSubPub, { Subject } from '@/lib/subject';
+import { cn } from '@/lib/utils';
 import { ColumnDef, ColumnSizingState } from '@tanstack/react-table';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useEffect, useRef } from 'react';
+import { IAdvancedTableProps } from '../table-provider';
+import { DataTableBody } from './data-table-body';
+import { DataTableHeader } from './data-table-header';
+import { DataTablePagination } from './data-table-pagination';
+import { DataTableSkeleton, DataTableSkeletonProps } from './data-table-skeleton';
 export function AdvancedDataTable<T>({
   columns,
   data,
@@ -66,7 +66,7 @@ export function AdvancedDataTable<T>({
         currentColumns.current = null;
       }
     };
-  }, []); //eslint-disable-line
+  }, []);
 
   useEffect(() => {
     if (!tableColumnEventUpdate.current) {
@@ -97,7 +97,7 @@ export function AdvancedDataTable<T>({
         currentData.current = null;
       }
     };
-  }, []); //eslint-disable-line
+  }, []);
   useEffect(() => {
     if (!tableDataEventUpdate.current) {
       tableDataEventUpdate.current = createEventSubPub<T[]>();

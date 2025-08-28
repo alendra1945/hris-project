@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Button } from '@/components/ui/button';
-
+import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from '../ui/date-picker';
@@ -81,8 +81,8 @@ export function LeaveBalanceFormCard({ isEdit = false }: UserActionDialogProps) 
     return employeesResp?.data || [];
   }, [employeesResp?.data]);
 
-  const form = useForm({
-    resolver: zodResolver(LeaveApplicationSchema),
+  const form = useForm<z.infer<typeof LeaveApplicationSchema>>({
+    resolver: standardSchemaResolver(LeaveApplicationSchema),
     values: {
       ...defaultValues,
       ...(isEdit && data ? LeaveApplicationSchemaFromApi.parse(data) : {}),

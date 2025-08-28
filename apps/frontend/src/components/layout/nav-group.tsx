@@ -1,6 +1,3 @@
-import { type ReactNode } from 'react';
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   SidebarGroup,
@@ -13,6 +10,9 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { type ReactNode } from 'react';
 import { Badge } from '../ui/badge';
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { type NavCollapsible, type NavItem, type NavLink, type NavGroup as NavGroupProps } from './types';
+import { type NavCollapsible, type NavGroup as NavGroupProps, type NavItem, type NavLink } from './types';
 
 export function NavGroup({ title, items }: NavGroupProps) {
   const { state, isMobile } = useSidebar();
@@ -136,6 +136,6 @@ function checkIsActive(href: string, item: NavItem, mainNav = false) {
     href === item.url || // /endpint?search=param
     href.split('?')[0] === item.url || // endpoint
     !!item?.items?.filter((i) => i.url === href).length || // if child nav is active
-    (mainNav && href.split('/')[1] !== '' && href.split('/')[1] === item?.url?.split('/')[1])
+    (mainNav && href.split('/')[1] !== '' && href.split('/')[1] === (item?.url as string)?.split('/')[1])
   );
 }

@@ -4,7 +4,6 @@ import { CreateReportingTemplateDto } from './dto/create-reporting-template.dto'
 import { UpdateReportingTemplateDto } from './dto/update-reporting-template.dto';
 import { ReportTemplate } from '@prisma/client';
 import { BaseResponse } from 'src/commons/dto/base-response.dto';
-import { UpdateLeaveBalanceDto } from '../leave-balance/dto/update-leave-balance.dto';
 
 @Controller('reporting-template')
 export class ReportingTemplateController {

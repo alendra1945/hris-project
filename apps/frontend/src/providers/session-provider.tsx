@@ -1,9 +1,9 @@
 'use client';
+import { EmployeeSchemaFromApi } from '@/hooks/use-employee-query';
+import { getMeQuery } from '@/hooks/use-user-query';
 import { useAuthStore } from '@/stores/auth-store';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
-import { getMeQuery } from '@/hooks/use-user-query';
-import { EmployeeSchemaFromApi } from '@/hooks/use-employee-query';
 export default function SessionProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { auth } = useAuthStore();
@@ -33,5 +33,5 @@ export default function SessionProvider({ children }: { children: React.ReactNod
       }
     })();
   }, []);
-  return <>{children}</>;
+  return children;
 }

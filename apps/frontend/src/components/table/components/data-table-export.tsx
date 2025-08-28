@@ -1,5 +1,5 @@
-import { DownloadIcon } from "lucide-react";
-import { Button } from "@gk-app/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { DownloadIcon } from 'lucide-react';
 // import { exportExcel, exportExcelData } from "@/lib/table-utils";
 
 export interface IDataTableExport<T> {
@@ -24,12 +24,12 @@ export function DataTableExport<T>({ onUserExport }: IDataTableExport<T>) {
   return (
     <Button
       onClick={onPress}
-      aria-label="Export data"
-      variant="ghost"
-      size="sm"
-      className="ml-auto h-8 lg:flex text-zinc-600 text-base"
+      aria-label='Export data'
+      variant='ghost'
+      size='sm'
+      className='ml-auto h-8 lg:flex text-zinc-600 text-base'
     >
-      <DownloadIcon className="mr-2 size-4" />
+      <DownloadIcon className='mr-2 size-4' />
       Export
     </Button>
   );

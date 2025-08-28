@@ -17,7 +17,7 @@ export default async function LeaveBalanceDetailPage({ params }: Props) {
   }
   return (
     <Main>
-      <LeaveBalanceFormCard isEdit={true} />
+      <LeaveBalanceFormCard isEdit />
     </Main>
   );
 }

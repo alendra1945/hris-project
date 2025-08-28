@@ -1,19 +1,22 @@
 'use client';
-import { cn } from '@/lib/utils';
-import { ReportTemplateDesign } from './report-template-design';
-import { useDetailReportTemplateQuery, useUpdateReportTemplateMutation } from '@/hooks/use-report-template-query';
-import { useRef } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
-import { toast } from 'sonner';
-import { Button } from '../ui/button';
+import { useDetailReportTemplateQuery, useUpdateReportTemplateMutation } from '@/hooks/use-report-template-query';
+import { cn } from '@/lib/utils';
 import { ArrowLeftIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
+import { ReportTemplateDesign } from './report-template-design';
 
 interface ReportingTemplateDesignEditorProps {
   params?: Record<string, string | undefined>;
   isLoading?: boolean;
 }
-export const ReportingTemplateDesignEditorSection = ({ params = {} }: ReportingTemplateDesignEditorProps) => {
+const defaultParams = {};
+export const ReportingTemplateDesignEditorSection = ({
+  params = defaultParams,
+}: ReportingTemplateDesignEditorProps) => {
   const { data: reportTemplateDetail } = useDetailReportTemplateQuery(params.id);
   const { mutateAsync: updateReportTemplate } = useUpdateReportTemplateMutation();
   const router = useRouter();
@@ -29,6 +32,7 @@ export const ReportingTemplateDesignEditorSection = ({ params = {} }: ReportingT
   }, 20000);
   const handleOnSave = async (showToast = false) => {
     try {
+      if (!reportTemplateDetail) return;
       await updateReportTemplate({
         id: params.id!,
         payload: {

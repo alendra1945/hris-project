@@ -1,27 +1,28 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { DatePicker } from '../ui/date-picker';
 import {
-  EmployeeSchema,
   Employee,
+  EmployeeSchema,
+  EmployeeSchemaFromApi,
   GenderSchema,
   StatusSchema,
   useCreateEmployeeMutation,
-  EmployeeSchemaFromApi,
   useDetailEmployeeQuery,
   useUpdateEmployeeMutation,
 } from '@/hooks/use-employee-query';
-import { SelectDropdown } from '../base/select-dropdown';
-import { Textarea } from '../ui/textarea';
 import { typographyClassName } from '@/lib/contants';
 import { cn } from '@/lib/utils';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useParams, useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+import { SelectDropdown } from '../base/select-dropdown';
+import { DatePicker } from '../ui/date-picker';
+import { Textarea } from '../ui/textarea';
 
 type UserActionDialogProps = {
   isEdit?: boolean;
@@ -47,8 +48,8 @@ export function EmployeeFormCard({ isEdit }: UserActionDialogProps) {
   const { mutateAsync: createEmployee } = useCreateEmployeeMutation();
   const { mutateAsync: updateEmployee } = useUpdateEmployeeMutation();
   const router = useRouter();
-  const form = useForm({
-    resolver: zodResolver(EmployeeSchema),
+  const form = useForm<z.infer<typeof EmployeeSchema>>({
+    resolver: standardSchemaResolver(EmployeeSchema),
     values: {
       ...defaultValues,
       ...(isEdit &&
@@ -76,7 +77,7 @@ export function EmployeeFormCard({ isEdit }: UserActionDialogProps) {
         toast.success('Employee created');
       }
       router.push('/employee');
-    } catch (error) {
+    } catch {
       if (isEdit) {
         toast.error('Employee update failed');
       } else {

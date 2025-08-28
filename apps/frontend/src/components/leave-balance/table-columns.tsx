@@ -1,20 +1,65 @@
 'use client';
-import { ColumnDef } from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { cn, getRandomColorById } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { LeaveApplication, LeaveStatusSchema } from '@/hooks/use-leave-query';
-import { useAuthStore } from '@/stores/auth-store';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent } from '../ui/dropdown-menu';
-import { EllipsisVertical, PenIcon, Trash } from 'lucide-react';
-import dayjs from 'dayjs';
 import { useModal } from '@/hooks/use-modal-store';
+import { cn, getRandomColorById } from '@/lib/utils';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
+import dayjs from 'dayjs';
+import { EllipsisVertical, PenIcon, Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 interface EmployeeInterface {}
 export interface ColumnsGradebook extends Omit<EmployeeInterface, 'student_first_name' | 'student_last_name'> {
   fullname: string;
   avatar: string;
 }
+
+type DataColumnLeaveApplication = LeaveApplication & { id: string };
+type CellContextLeaveApplication = CellContext<DataColumnLeaveApplication, any>; //eslint-disable-line
+
+const MenuColumn = ({ row }: CellContextLeaveApplication) => {
+  const { onOpen } = useModal();
+  const router = useRouter();
+  const handleDelete = () => {
+    onOpen('alertConfirmation', {
+      alertConfirmation: {
+        detail: {
+          id: row.original.id,
+        },
+      },
+    });
+  };
+  return (
+    <DropdownMenu>
+      {LeaveStatusSchema.safeParse(row.original.status).data !== 'APPROVED' && (
+        <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
+          <EllipsisVertical />
+        </DropdownMenuTrigger>
+      )}
+
+      <DropdownMenuContent className='shadow-none border-none rounded-sm'>
+        <DropdownMenuItem
+          onClick={() => {
+            router.push(`/leave-balance/${row.original.id}`);
+          }}
+        >
+          <PenIcon className='size-4' />
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            handleDelete();
+          }}
+          className='text-red-400 hover:!text-red-500'
+        >
+          <Trash className='size-4' />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
   {
     header: 'Employee',
@@ -107,47 +152,6 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
     header: '',
     accessorKey: 'id',
     size: 5,
-    cell: ({ row }) => {
-      const { onOpen } = useModal();
-      const router = useRouter();
-      const handleDelete = () => {
-        onOpen('alertConfirmation', {
-          alertConfirmation: {
-            detail: {
-              id: row.original.id,
-            },
-          },
-        });
-      };
-      return (
-        <DropdownMenu>
-          {LeaveStatusSchema.safeParse(row.original.status).data !== 'APPROVED' && (
-            <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
-              <EllipsisVertical />
-            </DropdownMenuTrigger>
-          )}
-
-          <DropdownMenuContent className='shadow-none border-none rounded-sm'>
-            <DropdownMenuItem
-              onClick={() => {
-                router.push(`/leave-balance/${row.original.id}`);
-              }}
-            >
-              <PenIcon className='size-4' />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                handleDelete();
-              }}
-              className='text-red-400 hover:!text-red-500'
-            >
-              <Trash className='size-4' />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: MenuColumn,
   },
 ];

@@ -1,18 +1,16 @@
 'use client';
-/* eslint-disable @typescript-eslint/no-namespace */
+import { cn, updateEditorStyle } from '@/lib/utils';
 import { useEffect, useMemo, useRef } from 'react';
-import { updateEditorStyle } from '@/lib/utils';
-import { cn } from '@/lib/utils';
 
 type Props = {
   className?: string;
   style?: React.CSSProperties;
   developerMode?: boolean;
-  pageData?: Record<string, any>;
-  globalData?: Record<string, any>;
-  pageSettings?: Record<string, any>;
-  elementsData?: Record<string, any>;
-  extendComponent?: Record<string, any>;
+  pageData?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  globalData?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  pageSettings?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  elementsData?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  extendComponent?: Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   onUpdate?: (data: { pageSettings: Record<string, any>; elementsData: Record<string, any> }) => void;
   onOpenImageGalery?: (callback: (imageUrl: string) => void) => void;
 };
@@ -37,9 +35,9 @@ export const ReportTemplateDesignPreview = ({
   const cleanContent = useMemo(() => content.replace(/math-field-node/g, 'math-field read-only'), [content]);
   return (
     <div
-      dangerouslySetInnerHTML={{ __html: cleanContent }}
+      dangerouslySetInnerHTML={{ __html: cleanContent as string }} // eslint-disable-line
       className={cn('gkvis-prose gk-flex gk-flex-col', className)}
-    ></div>
+    />
   );
 };
 
@@ -52,7 +50,7 @@ export const ReportTemplateDesign = ({ className, ...assignableProps }: Props) =
     if (!document.getElementById(scriptId)) {
       const script = document.createElement('script');
       script.id = scriptId;
-      script.src = '/report-design/reporting-template-design-web.js'; // served from /public
+      script.src = '/report-design/reporting-template-design-web.js';
       script.type = 'module';
       document.body.appendChild(script);
     }
@@ -65,5 +63,6 @@ export const ReportTemplateDesign = ({ className, ...assignableProps }: Props) =
     Object.assign(ref.current, { class: className });
   }, [assignableProps, className]);
 
-  return <reporting-template-design ref={ref as React.RefObject<ReportTemplateDesignElement>} />;
+  // @ts-ignore
+  return <reporting-template-design ref={ref} />;
 };

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserAuthForm } from '@/components/auth/user-auth-form';
 import { cn } from '@/lib/utils';
 import { typographyClassName } from '@/lib/contants';
@@ -14,7 +14,7 @@ export default function Signin() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <UserAuthForm redirectTo={'/dashboard'} />
+        <UserAuthForm redirectTo='/dashboard' />
       </CardContent>
     </Card>
   );

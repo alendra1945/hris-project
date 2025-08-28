@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+
 import { useRouter } from 'next/navigation';
-import { Loader2, LogIn } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/auth-store';
 import { cn } from '@/lib/utils';
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
 import { useMutation } from '@tanstack/react-query';
 import { sigInWithEmail } from '@/hooks/use-user-query';
-
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 const formSchema = z.object({
   email: z.email({
     error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
@@ -33,7 +33,7 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
   const { auth } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: standardSchemaResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',

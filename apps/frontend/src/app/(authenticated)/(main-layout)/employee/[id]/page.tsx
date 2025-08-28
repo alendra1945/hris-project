@@ -17,7 +17,7 @@ export default async function EmployeeDetailPage({ params }: Props) {
   }
   return (
     <Main>
-      <EmployeeFormCard isEdit={true} />
+      <EmployeeFormCard isEdit />
     </Main>
   );
 }

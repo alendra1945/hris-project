@@ -1,9 +1,8 @@
-import { Employee, getAllEmployeeQuery } from '@/hooks/use-employee-query';
-import { useState } from 'react';
-import { useTableDataContext } from '@/hooks/use-table-hooks';
+import { Employee, getAllEmployeeQuery, useDeleteEmployeeMutation } from '@/hooks/use-employee-query';
 import { modalEventSubject } from '@/hooks/use-modal-store';
 import { useSubscribe } from '@/hooks/use-subscribe';
-import { useDeleteEmployeeMutation } from '@/hooks/use-employee-query';
+import { useTableDataContext } from '@/hooks/use-table-hooks';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
 export const useEmployeeTableData = () => {
@@ -11,7 +10,7 @@ export const useEmployeeTableData = () => {
   const [totalData, setTotalData] = useState(10);
   const [{ isLoading }, { setIsLoading, setInternalData }] = useTableDataContext<Employee>();
   const { mutateAsync: deleteEmployeeQuery } = useDeleteEmployeeMutation();
-  const fetchDataEmployee = async (page = 1) => {
+  const fetchDataEmployee = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const data = await getAllEmployeeQuery({
@@ -21,11 +20,11 @@ export const useEmployeeTableData = () => {
       setInternalData(data.data || []);
       setTotalData(data.pagination.total);
       return data;
-    } catch (error) {
+    } catch {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
   const deleteEmployee = async (id: string) => {
     setIsLoading(true);
     try {
@@ -33,7 +32,7 @@ export const useEmployeeTableData = () => {
       setActivePage(1);
       fetchDataEmployee(1);
       toast.success('Employee deleted successfully');
-    } catch (error) {
+    } catch {
       setIsLoading(false);
       toast.error('Failed to delete employee');
     }

@@ -9,4 +9,4 @@ export interface ResponseWithPagination<T> {
   pagination: Pagination;
 }
 
-export interface QueryParams extends Record<string, any> {}
+export interface QueryParams extends Record<string, any> {} // eslint-disable-line @typescript-eslint/no-explicit-any

@@ -34,6 +34,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, varia
     <table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
   </div>
 ));
+Table.displayName = 'Table';
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   return <thead data-slot='table-header' className={cn('[&_tr]:border-b', className)} {...props} />;
 }
@@ -101,4 +102,4 @@ function TableCaption({ className, ...props }: React.ComponentProps<'caption'>) 
   );
 }
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

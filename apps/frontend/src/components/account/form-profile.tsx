@@ -1,10 +1,10 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { DatePicker } from '../ui/date-picker';
@@ -19,8 +19,8 @@ export function FormProfile() {
   const { auth } = useAuthStore();
   const { mutateAsync: updateUserDetail } = useUpdateUserDetailMutation();
   console.log(auth.user?.employeeInformation);
-  const form = useForm({
-    resolver: zodResolver(ProfileSchema),
+  const form = useForm<z.infer<typeof ProfileSchema>>({
+    resolver: standardSchemaResolver(ProfileSchema),
     mode: 'onChange',
     values: auth.user?.employeeInformation! || {
       firstName: '',
@@ -35,7 +35,7 @@ export function FormProfile() {
     try {
       await updateUserDetail({ payload: values });
       toast.success('Profile updated');
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile');
     }
   };

@@ -1,14 +1,9 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { DownloadIcon, EyeOff, ListXIcon, XIcon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { DownloadIcon, EyeOff, ListXIcon, XIcon } from 'lucide-react';
 // import { exportExcel, exportExcelData } from "@/lib/table-utils";
-import dayjs from "dayjs";
-import { useTableDataContext } from "@/hooks/use-table-hooks";
+import { useTableDataContext } from '@/hooks/use-table-hooks';
+import dayjs from 'dayjs';
 
 interface IDataTableFloatingBar<T> {
   onUserExport?: (rows: T[]) => void;
@@ -19,11 +14,8 @@ export function DataTableFloatingBar<T>({
   onHide,
 }: IDataTableFloatingBar<T>) {
   const [{ table }] = useTableDataContext();
-  const isFiltered =
-    table.getState().columnFilters.length > 0 ||
-    !!table.getState().globalFilter;
-  const isRowSelected =
-    table.getIsSomeRowsSelected() || table.getIsAllRowsSelected();
+  const isFiltered = table.getState().columnFilters.length > 0 || !!table.getState().globalFilter;
+  const isRowSelected = table.getIsSomeRowsSelected() || table.getIsAllRowsSelected();
   const naming: { [k: string]: any } = {};
   for (let i = 0; i < table.options.columns.length; i++) {
     const col = table.options.columns[i];
@@ -33,33 +25,29 @@ export function DataTableFloatingBar<T>({
   const currentFilters = table.getState().columnFilters.map((item: any) => {
     const fieldName = naming[item.id];
     if (item.value instanceof Array) {
-      item.value = item.value.map((ii: any) => (!ii ? "♾️" : ii));
+      item.value = item.value.map((ii: any) => (!ii ? '♾️' : ii));
       // range filter
       return {
         columnId: item.id,
-        filter: `${fieldName} In Range Of ( ${item.value.join(" - ")} )`,
+        filter: `${fieldName} In Range Of ( ${item.value.join(' - ')} )`,
       };
     }
-    if (typeof item.value === "string") {
+    if (typeof item.value === 'string') {
       // either search string or select
       return {
         columnId: item.id,
         filter: `${fieldName} Equals/Contains '${item.value}'`,
       };
     }
-    if (
-      typeof item.value === "object" &&
-      item.value !== null &&
-      !(item.value instanceof Array)
-    ) {
-      if (Object.keys(item.value).includes("from")) {
+    if (typeof item.value === 'object' && item.value !== null && !(item.value instanceof Array)) {
+      if (Object.keys(item.value).includes('from')) {
         // datetime
-        if (typeof item.value.from === "string") {
-          item.value.from = dayjs(item.value.from).format("yyyy/MM/dd");
-          item.value.to = dayjs(item.value.to).format("yyyy/MM/dd");
+        if (typeof item.value.from === 'string') {
+          item.value.from = dayjs(item.value.from).format('yyyy/MM/dd');
+          item.value.to = dayjs(item.value.to).format('yyyy/MM/dd');
         } else {
-          item.value.from = dayjs(item.value.from).format("yyyy/MM/dd");
-          item.value.to = dayjs(item.value.to).format("yyyy/MM/dd");
+          item.value.from = dayjs(item.value.from).format('yyyy/MM/dd');
+          item.value.to = dayjs(item.value.to).format('yyyy/MM/dd');
         }
         return {
           columnId: item.id,
@@ -70,9 +58,7 @@ export function DataTableFloatingBar<T>({
     return item;
   });
   const onRemoveColumnFilter = (columnId: string) => {
-    table.setColumnFilters(
-      table.getState().columnFilters.filter((item) => item.id !== columnId)
-    );
+    table.setColumnFilters(table.getState().columnFilters.filter((item) => item.id !== columnId));
   };
   const onPressResetFilter = () => {
     table.resetColumnFilters();
@@ -97,22 +83,17 @@ export function DataTableFloatingBar<T>({
   };
 
   return (
-    <div className="fixed inset-x-0 bottom-4 z-50 w-full px-4">
-      <div className="w-full overflow-x-auto space-y-2">
+    <div className='fixed inset-x-0 bottom-4 z-50 w-full px-4'>
+      <div className='w-full overflow-x-auto space-y-2'>
         {isFiltered && (
-          <div className="mx-auto flex w-fit items-center gap-2 rounded-md border bg-card p-2 shadow-2xl">
-            <div className="flex h-7 items-center rounded-md border ">
-              <Button
-                onClick={onPressResetFilter}
-                variant="outline"
-                size={"sm"}
-                className={"h-8"}
-              >
-                <XIcon className={"w-4 h-4 mr-1"} />
+          <div className='mx-auto flex w-fit items-center gap-2 rounded-md border bg-card p-2 shadow-2xl'>
+            <div className='flex h-7 items-center rounded-md border '>
+              <Button onClick={onPressResetFilter} variant='outline' size='sm' className='h-8'>
+                <XIcon className='w-4 h-4 mr-1' />
                 Clear Filters
               </Button>
             </div>
-            {currentFilters.length > 0 ? "●" : ""}
+            {currentFilters.length > 0 ? '●' : ''}
             {currentFilters.length > 0 &&
               currentFilters.map(
                 (
@@ -124,12 +105,12 @@ export function DataTableFloatingBar<T>({
                 ) => (
                   <Button
                     onClick={() => onRemoveColumnFilter(f.columnId)}
-                    key={String(index).concat("--filter")}
-                    variant={"outline"}
-                    size={"sm"}
-                    className={"h-8"}
+                    key={String(index).concat('--filter')}
+                    variant='outline'
+                    size='sm'
+                    className='h-8'
                   >
-                    <XIcon className={"w-4 h-4 mr-1"} />
+                    <XIcon className='w-4 h-4 mr-1' />
                     {f.filter}
                   </Button>
                 )
@@ -137,15 +118,10 @@ export function DataTableFloatingBar<T>({
           </div>
         )}
         {isRowSelected && (
-          <div className="mx-auto flex w-fit items-center gap-2 rounded-md border bg-card p-2 shadow-2xl">
-            <div className="flex h-7 items-center rounded-md border ">
-              <Button
-                onClick={() => table.resetRowSelection()}
-                variant="outline"
-                size={"sm"}
-                className={"h-8"}
-              >
-                <ListXIcon className={"w-4 h-4 mr-1"} />
+          <div className='mx-auto flex w-fit items-center gap-2 rounded-md border bg-card p-2 shadow-2xl'>
+            <div className='flex h-7 items-center rounded-md border '>
+              <Button onClick={() => table.resetRowSelection()} variant='outline' size='sm' className='h-8'>
+                <ListXIcon className='w-4 h-4 mr-1' />
                 Clear Selection
               </Button>
             </div>
@@ -153,13 +129,8 @@ export function DataTableFloatingBar<T>({
             {isRowSelected && onHide !== undefined ? (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant={"destructive"}
-                    size={"icon"}
-                    className={"h-8"}
-                    onClick={onHideInner}
-                  >
-                    <EyeOff className={"w-4 h-4"} />
+                  <Button variant='destructive' size='icon' className='h-8' onClick={onHideInner}>
+                    <EyeOff className='w-4 h-4' />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -169,13 +140,8 @@ export function DataTableFloatingBar<T>({
             ) : null}
             <Tooltip>
               <TooltipTrigger>
-                <Button
-                  onClick={onExport}
-                  variant="success"
-                  size={"icon"}
-                  className={"h-8"}
-                >
-                  <DownloadIcon className={"w-4 h-4"} />
+                <Button onClick={onExport} variant='outline' size='icon' className='h-8'>
+                  <DownloadIcon className='w-4 h-4' />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

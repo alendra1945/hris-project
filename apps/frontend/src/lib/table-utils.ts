@@ -1,7 +1,7 @@
-import { Column } from '@tanstack/react-table';
-import { CSSProperties } from 'react';
-import { FilterFn, SortingFn, sortingFns } from '@tanstack/table-core';
 import { compareItems, rankItem } from '@tanstack/match-sorter-utils';
+import { Column } from '@tanstack/react-table';
+import { FilterFn, SortingFn, sortingFns } from '@tanstack/table-core';
+import { CSSProperties } from 'react';
 // import { utils, writeFile } from "xlsx";
 
 export function getCommonPinningStyles<T>(column: Column<T>): CSSProperties {
@@ -24,7 +24,9 @@ export function getCommonPinningStyles<T>(column: Column<T>): CSSProperties {
   };
 }
 
+// eslint-disable-next-line
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // eslint-disable-line
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value, {
     threshold: 3,
@@ -38,14 +40,14 @@ export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-
+// eslint-disable-next-line
 export const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   let dir = 0;
-
+  // eslint-disable-next-line
   if ((rowA.columnFiltersMeta[columnId] as any)?.itemRank && (rowB.columnFiltersMeta[columnId] as any)?.itemRank) {
     dir = compareItems(
-      (rowA.columnFiltersMeta[columnId] as any)?.itemRank,
-      (rowB.columnFiltersMeta[columnId] as any)?.itemRank
+      (rowA.columnFiltersMeta[columnId] as any)?.itemRank, // eslint-disable-line
+      (rowB.columnFiltersMeta[columnId] as any)?.itemRank // eslint-disable-line
     );
   }
 

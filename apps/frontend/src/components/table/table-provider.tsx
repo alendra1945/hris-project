@@ -1,6 +1,14 @@
 'use client';
-import { useState, PropsWithChildren, useMemo, useCallback, useEffect } from 'react';
-import { FilterFn } from '@tanstack/table-core';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import {
+  ActiveTableMode,
+  PaginationTable,
+  TableColumnData,
+  TableContext,
+  TableDataProviderContext,
+} from '@/hooks/use-table-hooks';
+import { fuzzyFilter } from '@/lib/table-utils';
+import { RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,21 +19,12 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Table as TableType,
   useReactTable,
   VisibilityState,
-  Table as TableType,
-  ColumnSizingState,
 } from '@tanstack/react-table';
-import { fuzzyFilter } from '@/lib/table-utils';
-import { RankingInfo } from '@tanstack/match-sorter-utils';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import {
-  TableDataProviderContext,
-  PaginationTable,
-  TableColumnData,
-  TableContext,
-  ActiveTableMode,
-} from '@/hooks/use-table-hooks';
+import { FilterFn } from '@tanstack/table-core';
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,15 +48,16 @@ export interface IAdvancedTableProps<T> {
   data?: T[];
   pagination?: PaginationTable;
 }
+
 export function TableDataProvider<T extends TableColumnData>({
   children,
-  data = [],
+  data,
   columns,
   pagination: defaultPagination,
 }: PropsWithChildren<IAdvancedTableProps<T>>) {
   const [tableMode, setTableMode] = useState<ActiveTableMode>(ActiveTableMode.NONE);
-  const [internalColumns, setInternalColumns] = useState<ColumnDef<T>[]>(columns);
-  const [internalData, setInternalData] = useState<T[]>(data);
+  const [internalColumns, setInternalColumns] = useState<ColumnDef<T>[]>(columns || []);
+  const [internalData, setInternalData] = useState<T[]>(data || []);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnPinning, setColumnPinning] = useState<{

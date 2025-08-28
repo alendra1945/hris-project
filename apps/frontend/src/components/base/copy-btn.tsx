@@ -1,10 +1,10 @@
 'use client';
-import { useState } from 'react';
 import copy from 'copy-to-clipboard';
+import { useState } from 'react';
 
 import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip';
-import { Check, Copy } from 'lucide-react';
 import { TooltipContent } from '@radix-ui/react-tooltip';
+import { Check, Copy } from 'lucide-react';
 
 type ICopyBtnProps = {
   value: string;
@@ -31,9 +31,7 @@ const CopyBtn = ({ value, className, isPlain }: ICopyBtnProps) => {
       <Tooltip>
         <TooltipTrigger>
           <div
-            className={
-              'box-border w-fit p-1 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 bg-white cursor-pointer'
-            }
+            className='box-border w-fit p-1 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 bg-white cursor-pointer'
             style={
               !isPlain
                 ? {

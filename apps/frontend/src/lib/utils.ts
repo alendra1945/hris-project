@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import * as crypto from 'crypto';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
@@ -34,7 +34,7 @@ export function uuidToNumber(uuid: string, max = 1000000): number {
   return num % max;
 }
 export const updateEditorStyle = (styleProps?: React.CSSProperties) => {
-  const cssStyle: Record<string, any> = {};
+  const cssStyle: Record<string, any> = {}; // eslint-disable-line
   if (styleProps) {
     for (const [key, value] of Object.entries(styleProps)) {
       const cssKey = key.replace(/([A-Z])/g, (match) => `-${match.toLowerCase()}`);

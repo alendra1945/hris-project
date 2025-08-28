@@ -2,20 +2,20 @@
 
 import { AdvancedDataTable } from '@/components/table/components';
 import { Employee } from '@/hooks/use-employee-query';
-import { useEffect } from 'react';
-import { useEmployeeTableData } from './table-data';
-import Pagination from '../base/pagination';
 import { typographyClassName } from '@/lib/contants';
-import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Pagination from '../base/pagination';
+import { Button } from '../ui/button';
+import { useEmployeeTableData } from './table-data';
 
 export const TableCardEmployee = () => {
   const { fetchDataEmployee, page, totalData, setActivePage, isLoading } = useEmployeeTableData();
   const router = useRouter();
   useEffect(() => {
     fetchDataEmployee(page);
-  }, [page]);
+  }, [page,fetchDataEmployee]);
   return (
     <>
       <div className='mb-2 flex items-center justify-between space-y-2'>

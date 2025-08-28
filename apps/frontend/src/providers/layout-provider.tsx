@@ -1,6 +1,6 @@
 'use client';
-import { createContext, useContext, useState } from 'react';
 import { getCookie, setCookie } from '@/lib/cookies';
+import { createContext, useContext, useState } from 'react';
 
 export type Collapsible = 'offcanvas' | 'icon' | 'none';
 export type Variant = 'inset' | 'sidebar' | 'floating';
@@ -71,8 +71,6 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
   return <LayoutContext value={contextValue}>{children}</LayoutContext>;
 }
 
-// Define the hook for the provider
-// eslint-disable-next-line react-refresh/only-export-components
 export function useLayout() {
   const context = useContext(LayoutContext);
   if (!context) {
