@@ -1,23 +1,13 @@
 import { create } from 'zustand';
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies';
+import { ActiveUser } from '@/hooks/use-user-query';
 
 export const ACCESS_TOKEN = 'hris_access_token';
 
-interface AuthUser {
-  name: string;
-  avatarUrl: string;
-  createdAt: string;
-  email: string;
-  id: string;
-  isActive: boolean;
-  role: string;
-  updatedAt: string;
-}
-
 interface AuthState {
   auth: {
-    user: AuthUser | null;
-    setUser: (user: AuthUser | null) => void;
+    user: ActiveUser | null;
+    setUser: (user: ActiveUser | null) => void;
     accessToken: string;
     setAccessToken: (accessToken: string, refreshToken: string) => void;
     resetAccessToken: () => void;

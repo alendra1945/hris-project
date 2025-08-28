@@ -5,7 +5,7 @@ import { typographyClassName } from '@/lib/contants';
 
 export default function Signin() {
   return (
-    <Card className='gap-6'>
+    <Card className='gap-6 border-none rounded-none shadow-none'>
       <CardHeader>
         <CardTitle className={cn('text-lg tracking-tight', typographyClassName.h2)}>Sign in</CardTitle>
         <CardDescription>

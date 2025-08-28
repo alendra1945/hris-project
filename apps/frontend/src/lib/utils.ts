@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import * as crypto from 'crypto';
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
@@ -25,4 +26,10 @@ const COLORS: string[] = [
 ];
 export function getRandomColorById(id: number): string {
   return COLORS[id % COLORS.length];
+}
+export function uuidToNumber(uuid: string, max = 1000000): number {
+  const hash = crypto.createHash('sha256').update(uuid).digest('hex');
+  // Take first 12 hex chars → convert to int
+  const num = parseInt(hash.substring(0, 12), 16);
+  return num % max;
 }

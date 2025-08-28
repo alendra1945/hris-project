@@ -19,7 +19,6 @@ export class AuthService {
         email: body.email,
       },
     });
-    console.log(exitedUser);
     if (exitedUser) {
       throw new BadRequestException('User already exist');
     }
@@ -35,6 +34,7 @@ export class AuthService {
         avatarUrl: true,
       },
     });
+
     return newUser;
   }
   async signin(@Body() body: AuthSignupRequest) {
@@ -52,8 +52,8 @@ export class AuthService {
       throw new ForbiddenException('credentials incorrect');
     }
     const token = {
-      accessToken: this.signJwt(dataUser, dataUser.email, 3600, false),
-      refreshToken: this.signJwt(dataUser, dataUser.email, 7200, true),
+      accessToken: this.signJwt(dataUser, dataUser.email, 3600 * 24, false),
+      refreshToken: this.signJwt(dataUser, dataUser.email, 7200 * 24, true),
       expiresIn: 3600,
     };
     return token;

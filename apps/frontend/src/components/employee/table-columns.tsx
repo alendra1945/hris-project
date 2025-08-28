@@ -5,33 +5,48 @@ import { cn, getRandomColorById } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Employee, StatusSchema } from '@/hooks/use-employee-query';
 import CopyBtn from '../base/copy-btn';
+import { useAuthStore } from '@/stores/auth-store';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent } from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
+import { Ellipsis, EllipsisVertical, NotebookIcon, PenIcon, Trash } from 'lucide-react';
+
+import { useModal } from '@/hooks/use-modal-store';
+import { useRouter } from 'next/navigation';
 interface EmployeeInterface {}
 export interface ColumnsGradebook extends Omit<EmployeeInterface, 'student_first_name' | 'student_last_name'> {
   fullname: string;
   avatar: string;
 }
-export const defaultColums: ColumnDef<Employee>[] = [
+export const defaultColums: ColumnDef<Employee & { id: string }>[] = [
   {
     header: 'Employee',
     accessorFn: (row) => (row.firstName + ' ' + row.lastName).trim(),
-    cell: ({ row, renderValue }) => (
-      <div className={cn('flex items-center gap-2')}>
-        <Avatar className={cn('size-8 shadow-xs')}>
-          <AvatarFallback
-            className='capitalize font-medium text-white text-xs'
-            style={{
-              backgroundColor: getRandomColorById(row.index),
-            }}
-          >
-            {row.original.firstName?.slice(0, 1).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-        <div className='w-fit'>
-          <p className='text-sm text-ellipsis font-medium text-gray-800'>{renderValue() as string}</p>
-          <p className='text-xs text-ellipsis'>{row.original.companyEmail.trim()}</p>
+    cell: ({ row, renderValue }) => {
+      const { auth } = useAuthStore();
+      return (
+        <div className={cn('flex items-center gap-2')}>
+          <Avatar className={cn('size-8 shadow-xs')}>
+            <AvatarFallback
+              className='capitalize font-medium text-white text-xs'
+              style={{
+                backgroundColor: getRandomColorById(row.index),
+              }}
+            >
+              {row.original.firstName?.slice(0, 1).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className='w-fit'>
+            <p className='text-sm text-ellipsis font-medium text-gray-800'>
+              {renderValue() as string}
+              {auth.user?.employeeInformation?.employeeNumber === row.original.employeeNumber && (
+                <span className='font-bold pl-2 text-rose-500'>(You)</span>
+              )}
+            </p>
+            <p className='text-xs text-ellipsis'>{row.original.companyEmail}</p>
+          </div>
         </div>
-      </div>
-    ),
+      );
+    },
     size: 250,
   },
   {
@@ -72,6 +87,53 @@ export const defaultColums: ColumnDef<Employee>[] = [
         <div className='w-full flex gap-x-5'>
           <p className='text-sm text-gray-600 hover:text-gray-700 font-normal'>{row.original.department}</p>
         </div>
+      );
+    },
+  },
+  {
+    header: '',
+    accessorKey: 'id',
+    size: 5,
+    cell: ({ row }) => {
+      const { auth } = useAuthStore();
+      const { onOpen } = useModal();
+      const router = useRouter();
+      const handleDelete = () => {
+        onOpen('alertDelete', {
+          alertDeleteData: {
+            detail: {
+              id: row.original.id,
+            },
+          },
+        });
+      };
+      return (
+        <DropdownMenu>
+          {auth.user?.employeeInformation?.employeeNumber !== row.original.employeeNumber && (
+            <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
+              <EllipsisVertical />
+            </DropdownMenuTrigger>
+          )}
+          <DropdownMenuContent className='shadow-none border-none rounded-sm'>
+            <DropdownMenuItem
+              onClick={() => {
+                router.push(`/employee/${row.original.id}`);
+              }}
+            >
+              <PenIcon className='size-4' />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                handleDelete();
+              }}
+              className='text-red-400 hover:!text-red-500'
+            >
+              <Trash className='size-4' />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },

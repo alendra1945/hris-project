@@ -24,7 +24,6 @@ export function AdvancedDataTable<T>({
   skeletonSettings?: DataTableSkeletonProps;
   tableSettings?: TableProps;
 }) {
-  console.log('rnder');
   const tableColumnEventUpdate = useRef<Subject<ColumnDef<T>[]> | null>(null);
   const currentColumns = useRef<ColumnDef<T>[] | null>(null);
 

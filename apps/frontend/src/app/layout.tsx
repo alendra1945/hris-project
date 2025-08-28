@@ -19,12 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className='light' style={{ colorScheme: 'light' }}>
-      <body className={cn(inter.className)}>
+    <html
+      lang='en'
+      className='light'
+      style={{ colorScheme: 'light', scrollBehavior: 'smooth', scrollbarGutter: 'stable' }}
+    >
+      <body className={cn(inter.className, 'smooth-scroll overflow-auto w-full h-min-screen')}>
         <QueryClientProvider>
           <ThemeProvider attribute='class' defaultTheme='light' enableSystem disableTransitionOnChange>
             {children}
-            <Toaster position='bottom-left' />
+            <Toaster position='top-right' />
           </ThemeProvider>
         </QueryClientProvider>
       </body>

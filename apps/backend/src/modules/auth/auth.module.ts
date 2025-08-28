@@ -13,7 +13,7 @@ import { AccountService } from '../account/account.service';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
-        expiresIn: 3600,
+        expiresIn: 3600 * 24,
       }),
       inject: [ConfigService],
     }),

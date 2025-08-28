@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-
+import AlertDeleteModal from '@/components/dialog/alert-delete-modal';
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -13,5 +13,9 @@ export const ModalProvider = () => {
   if (!isMounted) {
     return null;
   }
-  return <></>;
+  return (
+    <>
+      <AlertDeleteModal />
+    </>
+  );
 };

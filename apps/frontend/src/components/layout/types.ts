@@ -34,11 +34,3 @@ type NavGroup = {
   title: string;
   items: NavItem[];
 };
-
-type SidebarData = {
-  user: User;
-  teams: Team[];
-  navGroups: NavGroup[];
-};
-
-export type { SidebarData, NavGroup, NavItem, NavCollapsible, NavLink };

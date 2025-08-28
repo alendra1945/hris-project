@@ -6,12 +6,9 @@ export enum MODAL_STATUS {
   CLOSE = 'close',
 }
 
-export type ModalType = 'createWorkFlow';
+export type ModalType = 'alertDelete';
 
 interface ModalData {
-  query?: Record<string, any>;
-  workflowData?: any;
-  spaceData?: any;
   alertDeleteData?: {
     title?: string;
     description?: string;

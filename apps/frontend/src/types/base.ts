@@ -5,7 +5,7 @@ export interface Pagination {
 }
 
 export interface ResponseWithPagination<T> {
-  data: T[];
+  data: T;
   pagination: Pagination;
 }
 

@@ -16,6 +16,7 @@ datasource db {
 
 enum Role {
   ADMIN
+  SUBACCOUNT_ADMIN
   SUBACCOUNT_USER
   SUBACCOUNT_GUEST
 }
@@ -43,10 +44,10 @@ model Account {
   pipeline            Pipeline[]
   ticket              Ticket[]
   ticketAccount       TicketAccount[]
-  EmployeeInformation EmployeeInformation?
-  Notification        Notification[]
-  Trigger             Trigger[]
-  Automation          Automation[]
+  employeeInformation EmployeeInformation?
+  notification        Notification[]
+  trigger             Trigger[]
+  automation          Automation[]
 }
 
 model Permissions {

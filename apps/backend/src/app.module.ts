@@ -8,6 +8,7 @@ import { AccountModule } from './modules/account/account.module';
 import { PipelineModule } from './modules/pipeline/pipeline.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmployeeInformationModule } from './modules/employee-information/employee-information.module';
+import { LeaveBalanceModule } from './modules/leave-balance/leave-balance.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { EmployeeInformationModule } from './modules/employee-information/employ
     AccountModule,
     PipelineModule,
     EmployeeInformationModule,
+    LeaveBalanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

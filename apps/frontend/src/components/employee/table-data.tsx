@@ -1,33 +1,58 @@
-import { AdvancedDataTable } from '@/components/table/components';
-import { defaultColums } from './table-columns';
 import { Employee, getAllEmployeeQuery } from '@/hooks/use-employee-query';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useTableDataContext } from '@/hooks/use-table-hooks';
+import { modalEventSubject } from '@/hooks/use-modal-store';
+import { useSubscribe } from '@/hooks/use-subscribe';
+import { useDeleteEmployeeMutation } from '@/hooks/use-employee-query';
+import { toast } from 'sonner';
 
 export const useEmployeeTableData = () => {
-  const [, { setIsLoading, setInternalData }] = useTableDataContext<Employee[]>();
-  const fetchDataEmployee = async () => {
+  const [page, setActivePage] = useState(1);
+  const [totalData, setTotalData] = useState(10);
+  const [{ isLoading }, { setIsLoading, setInternalData }] = useTableDataContext<Employee>();
+  const { mutateAsync: deleteEmployeeQuery } = useDeleteEmployeeMutation();
+  const fetchDataEmployee = async (page = 1) => {
     setIsLoading(true);
     try {
-      const data = await getAllEmployeeQuery();
+      const data = await getAllEmployeeQuery({
+        page: page,
+        limit: 10,
+      });
       setInternalData(data.data || []);
+      setTotalData(data.pagination.total);
+      return data;
     } catch (error) {
     } finally {
       setIsLoading(false);
     }
   };
-
-  //   useEffect(() => {
-  //     setIsLoading(isLoading);
-  //   }, [isLoading]);
-
-  //   useEffect(() => {
-  //     if (data) {
-  //       console.log(data);
-  //     }
-  //   }, [data]);
-
+  const deleteEmployee = async (id: string) => {
+    setIsLoading(true);
+    try {
+      await deleteEmployeeQuery(id);
+      setActivePage(1);
+      fetchDataEmployee(1);
+      toast.success('Employee deleted successfully');
+    } catch (error) {
+      setIsLoading(false);
+      toast.error('Failed to delete employee');
+    }
+  };
+  useSubscribe({
+    subject: modalEventSubject,
+    next: async ({ type, data, status }) => {
+      console.log(data.detail);
+      if (status === 'close' && type == 'alertDelete' && data?.isConfirm && data?.detail?.id) {
+        deleteEmployee(data.detail.id);
+      }
+    },
+    disabled: false,
+  });
   return {
     fetchDataEmployee,
+    page,
+    totalData,
+    setActivePage,
+    isLoading,
   };
 };

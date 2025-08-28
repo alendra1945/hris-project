@@ -1,9 +1,8 @@
 'use client';
 import { AppSidebar } from '@/components/layout/app-sidebar';
-import { sidebarData } from '@/components/layout/data/sidebar-data';
 import { NavGroup } from '@/components/layout/nav-group';
 import { NavUser } from '@/components/layout/nav-user';
-import { TeamSwitcher } from '@/components/layout/team-switcher';
+import { AppLogo } from '@/components/layout/app-logo';
 import {
   SidebarContent,
   SidebarFooter,
@@ -13,16 +12,96 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { Header } from '@/components/layout/header';
+import { TopNav } from '@/components/layout/top-nav';
+import { LayoutDashboard, ListTodo, Users, UserSearchIcon } from 'lucide-react';
 
+const topNav = [
+  {
+    title: 'Overview',
+    href: '/dashboard',
+    isActive: true,
+    disabled: false,
+  },
+  {
+    title: 'Employee Lifecycle',
+    href: '/employee',
+    isActive: false,
+    disabled: true,
+  },
+  {
+    title: 'Shift & Attendance',
+    href: 'dashboard/shift-attendance',
+    isActive: false,
+    disabled: true,
+  },
+  {
+    title: 'Leaves',
+    href: 'dashboard/leaves',
+    isActive: false,
+    disabled: true,
+  },
+];
+
+export const navGroups = [
+  {
+    title: '',
+    items: [
+      {
+        title: 'Dashboard',
+        url: '/dashboard',
+        icon: LayoutDashboard,
+      },
+      {
+        title: 'Employee Information',
+        icon: Users,
+        items: [
+          {
+            title: 'List',
+            url: '/employee',
+          },
+          {
+            title: 'Leave Balance',
+            url: '/leave-balance',
+          },
+        ],
+      },
+      {
+        title: 'Report',
+        icon: ListTodo,
+        items: [
+          {
+            title: 'Settings',
+            url: '/employee',
+          },
+          {
+            title: 'Templates',
+            url: '/leave-balance',
+          },
+        ],
+      },
+      {
+        title: 'Users',
+        icon: UserSearchIcon,
+        items: [
+          {
+            title: 'List',
+            url: '/members',
+          },
+        ],
+      },
+    ],
+  },
+];
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar>
         <SidebarHeader>
-          <TeamSwitcher teams={sidebarData.teams} />
+          <AppLogo />
         </SidebarHeader>
-        <SidebarContent>
-          {sidebarData.navGroups.map((props) => (
+        <SidebarContent className='smooth-scroll'>
+          {navGroups.map((props) => (
             <NavGroup key={props.title} {...props} />
           ))}
         </SidebarContent>
@@ -33,19 +112,14 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       </AppSidebar>
       <SidebarInset
         className={cn(
-          // If layout is fixed, set the height
-          // to 100svh to prevent overflow
           'has-[[data-layout=fixed]]:h-svh',
-
-          // If layout is fixed and sidebar is inset,
-          // set the height to 100svh - 1rem (total margins) to prevent overflow
-          // 'peer-data-[variant=inset]:has-[[data-layout=fixed]]:h-[calc(100svh-1rem)]',
           'peer-data-[variant=inset]:has-[[data-layout=fixed]]:h-[calc(100svh-(var(--spacing)*4))]',
-
-          // Set content container, so we can use container queries
           '@container/content'
         )}
       >
+        <Header>
+          <TopNav links={topNav} />
+        </Header>
         {children}
       </SidebarInset>
     </SidebarProvider>

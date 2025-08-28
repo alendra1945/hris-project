@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Loader2, LogIn } from 'lucide-react';
 import { toast } from 'sonner';
@@ -50,6 +49,7 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
       auth.setAccessToken(response?.accessToken, response?.refreshToken);
       router.replace(redirectTo || '/');
     } catch {
+      toast.error('Invalid email or password');
     } finally {
       setIsLoading(false);
     }
@@ -81,17 +81,11 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
               <FormMessage />
-              <Link
-                href='/forgot-password'
-                className='text-muted-foreground absolute end-0 -top-0.5 text-sm font-medium hover:opacity-75'
-              >
-                Forgot password?
-              </Link>
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
-          {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
+        <Button className='mt-2 bg-[#353688] hover:bg-[#2a2b66] text-white cursor-pointer' disabled={isLoading}>
+          {isLoading && <Loader2 className='animate-spin' />}
           Sign in
         </Button>
       </form>

@@ -1,6 +1,6 @@
+'use client';
 import Link from 'next/link';
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
-// import useDialogState from '@/hooks/use-dialog-state';
+import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -13,13 +13,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/stores/auth-store';
-// import { SignOutDialog } from '@/components/sign-out-dialog';
+import { useRouter } from 'next/navigation';
 
 export function NavUser() {
   const { auth } = useAuthStore();
   const { isMobile } = useSidebar();
-  //   const [open, setOpen] = useDialogState();
-
+  const router = useRouter();
+  const handleSignOut = () => {
+    auth.reset();
+    router.replace('/signin');
+  };
   return (
     <>
       <SidebarMenu>
@@ -54,42 +57,22 @@ export function NavUser() {
                     <AvatarFallback className='rounded-lg'>SN</AvatarFallback>
                   </Avatar>
                   <div className='grid flex-1 text-start text-sm leading-tight'>
-                    <span className='truncate font-semibold'>{auth?.user?.name}</span>
+                    <span className='truncate font-semibold'>{auth?.user?.employeeInformation?.firstName}</span>
                     <span className='truncate text-xs'>{auth?.user?.email}</span>
                   </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link href='/settings/account'>
+                  <Link href='/profile'>
                     <BadgeCheck />
                     Account
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href='/settings'>
-                    <CreditCard />
-                    Billing
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href='/settings/notifications'>
-                    <Bell />
-                    Notifications
-                  </Link>
-                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              {/* <DropdownMenuItem onClick={() => setOpen(true)}></DropdownMenuItem> */}
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSignOut}>
                 <LogOut />
                 Sign out
               </DropdownMenuItem>
@@ -97,8 +80,6 @@ export function NavUser() {
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-      {/* 
-      <SignOutDialog open={!!open} onOpenChange={setOpen} /> */}
     </>
   );
 }
