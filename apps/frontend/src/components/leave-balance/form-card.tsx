@@ -27,6 +27,7 @@ import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { Employee, getAllEmployees } from '@/hooks/use-employee-query';
 import { CheckIcon, ChevronsUpDown } from 'lucide-react';
+import { useModal } from '@/hooks/use-modal-store';
 
 type UserActionDialogProps = {
   isEdit?: boolean;
@@ -63,6 +64,7 @@ export function useDebounce<T>(value: T, delay?: number): T {
 }
 export function LeaveBalanceFormCard({ isEdit = false }: UserActionDialogProps) {
   const params = useParams<{ id: string }>();
+  const { onOpen } = useModal();
   const { data } = useDetailLeaveQuery(isEdit ? params.id : undefined);
   const { mutateAsync: createLeave } = useCreateLeaveMutation();
   const { mutateAsync: updateLeave } = useUpdateLeaveMutation();
@@ -112,13 +114,28 @@ export function LeaveBalanceFormCard({ isEdit = false }: UserActionDialogProps) 
       }
     }
   };
+  const validateStatus = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (form.getValues('status') === LeaveStatusSchema.enum.APPROVED) {
+      onOpen('alertConfirmation', {
+        alertConfirmation: {
+          description: 'Are you sure you want to approve this leave application?',
+          detail: {},
+        },
+      });
+    } else {
+      form.handleSubmit(onSubmit)(e);
+    }
+  };
   return (
     <div className='w-full h-full'>
       <Form {...form}>
-        <form id='leave-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-10 px-0.5'>
+        <form id='leave-form' noValidate onSubmit={validateStatus} className='space-y-10 px-0.5'>
           <div className='flex items-center justify-between'>
             <h1 className='text-2xl font-bold tracking-tight'>Leave Application Form</h1>
-            <Button disabled={!form.watch('employeeNumber')}>{isEdit ? 'Update' : 'Save'}</Button>
+            <Button disabled={!form.watch('employeeNumber')} type='submit'>
+              {isEdit ? 'Update' : 'Save'}
+            </Button>
           </div>
           <div className='space-y-4'>
             <h2 className={cn(typographyClassName.h2, 'text-md font-bold')}>Application</h2>

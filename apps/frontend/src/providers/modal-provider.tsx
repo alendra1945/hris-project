@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import AlertDeleteModal from '@/components/dialog/alert-delete-modal';
+import AlertConfirmModal from '@/components/dialog/alert-confirm-modal';
+import { CreateReportingTemplateModal } from '@/components/reporting-templates/dialog-add-report';
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -15,7 +16,8 @@ export const ModalProvider = () => {
   }
   return (
     <>
-      <AlertDeleteModal />
+      <AlertConfirmModal />
+      <CreateReportingTemplateModal />
     </>
   );
 };

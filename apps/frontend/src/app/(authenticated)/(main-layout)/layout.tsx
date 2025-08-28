@@ -71,12 +71,8 @@ export const navGroups = [
         icon: ListTodo,
         items: [
           {
-            title: 'Settings',
-            url: '/report-settings',
-          },
-          {
             title: 'Templates',
-            url: '/report-templates',
+            url: '/reporting-template',
           },
         ],
       },

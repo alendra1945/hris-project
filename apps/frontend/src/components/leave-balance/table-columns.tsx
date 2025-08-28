@@ -111,8 +111,8 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
       const { onOpen } = useModal();
       const router = useRouter();
       const handleDelete = () => {
-        onOpen('alertDelete', {
-          alertDeleteData: {
+        onOpen('alertConfirmation', {
+          alertConfirmation: {
             detail: {
               id: row.original.id,
             },
@@ -121,9 +121,12 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
       };
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
-            <EllipsisVertical />
-          </DropdownMenuTrigger>
+          {LeaveStatusSchema.safeParse(row.original.status).data !== 'APPROVED' && (
+            <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
+              <EllipsisVertical />
+            </DropdownMenuTrigger>
+          )}
+
           <DropdownMenuContent className='shadow-none border-none rounded-sm'>
             <DropdownMenuItem
               onClick={() => {

@@ -9,6 +9,7 @@ import { PipelineModule } from './modules/pipeline/pipeline.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmployeeInformationModule } from './modules/employee-information/employee-information.module';
 import { LeaveBalanceModule } from './modules/leave-balance/leave-balance.module';
+import { ReportingTemplateModule } from './modules/reporting-template/reporting-template.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LeaveBalanceModule } from './modules/leave-balance/leave-balance.module
     PipelineModule,
     EmployeeInformationModule,
     LeaveBalanceModule,
+    ReportingTemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

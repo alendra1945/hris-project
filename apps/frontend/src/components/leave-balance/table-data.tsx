@@ -43,8 +43,7 @@ export const useLeaveTableData = () => {
   useSubscribe({
     subject: modalEventSubject,
     next: async ({ type, data, status }) => {
-      console.log(data.detail);
-      if (status === 'close' && type == 'alertDelete' && data?.isConfirm && data?.detail?.id) {
+      if (status === 'close' && type == 'alertConfirmation' && data?.isConfirm && data?.detail?.id) {
         deleteLeave(data.detail.id);
       }
     },

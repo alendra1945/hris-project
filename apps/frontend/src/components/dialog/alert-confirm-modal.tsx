@@ -8,15 +8,12 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal-store';
-import { modalEventSubject } from '@/hooks/use-modal-store';
-import { useSubscribe } from '@/hooks/use-subscribe';
 
-export default function AlertDeleteModal() {
+export default function AlertConfirmModal() {
   const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === 'alertDelete';
-  const alertData = data?.alertDeleteData;
+  const isModalOpen = isOpen && type === 'alertConfirmation';
+  const alertData = data?.alertConfirmation;
   const handleClose = () => {
     onClose({ isConfirm: true });
   };

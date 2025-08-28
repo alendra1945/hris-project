@@ -20,7 +20,7 @@ export class LeaveBalanceService {
     const data = await this.prisma.leaveApplication.findMany({
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
     });
     const total = await this.prisma.leaveApplication.count();
     return {
@@ -72,7 +72,7 @@ export class LeaveBalanceService {
 
     if (approvedLeavesThisYear >= 12) {
       throw new BadRequestException(
-        `Leave request rejected: You have already used your yearly quota of 12 leave days. Current usage: ${approvedLeavesThisYear}/12`
+        `Leave request rejected: This Employee already used your yearly quota of 12 leave days. Current usage: ${approvedLeavesThisYear}/12`
       );
     }
 
@@ -95,7 +95,7 @@ export class LeaveBalanceService {
 
     if (approvedLeavesThisMonth >= 1) {
       throw new BadRequestException(
-        `Leave request rejected: You have already taken leave in ${monthStart.toLocaleString('default', { month: 'long', year: 'numeric' })}. Only 1 leave day per month is allowed.`
+        `Leave request rejected: This Employee already taken leave in ${monthStart.toLocaleString('default', { month: 'long', year: 'numeric' })}. Only 1 leave day per month is allowed.`
       );
     }
     return true;

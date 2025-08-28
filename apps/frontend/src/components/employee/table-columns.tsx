@@ -99,8 +99,8 @@ export const defaultColums: ColumnDef<Employee & { id: string }>[] = [
       const { onOpen } = useModal();
       const router = useRouter();
       const handleDelete = () => {
-        onOpen('alertDelete', {
-          alertDeleteData: {
+        onOpen('alertConfirmation', {
+          alertConfirmation: {
             detail: {
               id: row.original.id,
             },

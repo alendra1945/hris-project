@@ -1,19 +1,21 @@
 import { create } from 'zustand';
 import createSubject from '@/lib/subject';
+import { ReportTemplate } from './use-report-template-query';
 
 export enum MODAL_STATUS {
   OPEN = 'open',
   CLOSE = 'close',
 }
 
-export type ModalType = 'alertDelete';
+export type ModalType = 'alertConfirmation' | 'createReportTemplate';
 
 interface ModalData {
-  alertDeleteData?: {
+  alertConfirmation?: {
     title?: string;
     description?: string;
     detail: Record<string, any>;
   };
+  reportTemplateData?: { id: string; data: ReportTemplate };
 }
 
 interface ModalStore {

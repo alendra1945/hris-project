@@ -3,7 +3,6 @@ import { ResponseWithPagination } from '@/types/base';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
-// Leave Application: Enums and Schemas
 export const LeaveTypeSchema = z.enum(['CASUAL', 'COMPENSATORY', 'LEAVE_WITHOUT_PAY', 'PRIVILEGE', 'SICK']);
 export type LeaveType = z.infer<typeof LeaveTypeSchema>;
 
