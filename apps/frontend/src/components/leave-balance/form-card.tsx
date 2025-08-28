@@ -64,7 +64,6 @@ export function useDebounce<T>(value: T, delay?: number): T {
 export function LeaveBalanceFormCard({ isEdit = false }: UserActionDialogProps) {
   const params = useParams<{ id: string }>();
   const { data } = useDetailLeaveQuery(isEdit ? params.id : undefined);
-  console.log('data', isEdit, data);
   const { mutateAsync: createLeave } = useCreateLeaveMutation();
   const { mutateAsync: updateLeave } = useUpdateLeaveMutation();
   const router = useRouter();
@@ -90,23 +89,26 @@ export function LeaveBalanceFormCard({ isEdit = false }: UserActionDialogProps) 
 
   const onSubmit = async (values: LeaveApplication) => {
     try {
-      const payload = {
-        ...values,
-        employeeNumber: 'HR-MD-' + values.employeeNumber.toUpperCase(),
-      };
       if (isEdit) {
-        await updateLeave({ id: params.id, payload });
+        await updateLeave({ id: params.id, payload: values });
         toast.success('Leave application updated');
       } else {
-        await createLeave(payload);
+        await createLeave(values);
         toast.success('Leave application created');
       }
       router.push('/leave-balance');
-    } catch (error) {
+    } catch (error: any) {
+      const msg = error?.message;
       if (isEdit) {
-        toast.error('Leave application update failed');
+        toast.error('Leave application update failed', {
+          description: msg || '',
+          duration: !msg ? 50000 : undefined,
+        });
       } else {
-        toast.error('Leave application creation failed');
+        toast.error('Leave application creation failed', {
+          description: msg || '',
+          duration: !msg ? 50000 : undefined,
+        });
       }
     }
   };

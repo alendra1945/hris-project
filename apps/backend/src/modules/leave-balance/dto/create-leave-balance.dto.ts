@@ -33,11 +33,11 @@ export class CreateLeaveBalanceDto {
 
   @IsDateString()
   @IsNotEmpty()
-  startDate: Date;
+  startDate: string;
 
   @IsDateString()
   @IsNotEmpty()
-  endDate: Date;
+  endDate: string;
 
   @IsString()
   @IsNotEmpty()

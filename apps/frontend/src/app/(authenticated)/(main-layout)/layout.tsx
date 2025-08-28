@@ -72,11 +72,11 @@ export const navGroups = [
         items: [
           {
             title: 'Settings',
-            url: '/employee',
+            url: '/report-settings',
           },
           {
             title: 'Templates',
-            url: '/leave-balance',
+            url: '/report-templates',
           },
         ],
       },

@@ -54,7 +54,7 @@ export const fetchClientQuery = async <T>(
     console.log('🔴 Error', result?.ok, result?.status, data);
     return {
       data: null,
-      error: data.msg || 'Something went wrong',
+      error: data.message || 'Something went wrong',
       status: result.status,
     };
   } else {

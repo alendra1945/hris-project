@@ -44,7 +44,7 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
   },
   {
     header: 'Approver',
-    accessorKey: 'approverName',
+    accessorKey: 'leaveApproverName',
     cell: ({ row, renderValue }) => {
       return (
         <div className={cn('flex items-center gap-2')}>
@@ -108,7 +108,6 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
     accessorKey: 'id',
     size: 5,
     cell: ({ row }) => {
-      const { auth } = useAuthStore();
       const { onOpen } = useModal();
       const router = useRouter();
       const handleDelete = () => {
@@ -122,11 +121,9 @@ export const defaultColums: ColumnDef<LeaveApplication & { id: string }>[] = [
       };
       return (
         <DropdownMenu>
-          {auth.user?.employeeInformation?.employeeNumber !== row.original.employeeNumber && (
-            <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
-              <EllipsisVertical />
-            </DropdownMenuTrigger>
-          )}
+          <DropdownMenuTrigger className='hover:bg-neutral-900/5 size-6 [&_svg]:size-4 ml-auto cursor-pointer'>
+            <EllipsisVertical />
+          </DropdownMenuTrigger>
           <DropdownMenuContent className='shadow-none border-none rounded-sm'>
             <DropdownMenuItem
               onClick={() => {
