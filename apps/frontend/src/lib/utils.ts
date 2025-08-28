@@ -33,3 +33,13 @@ export function uuidToNumber(uuid: string, max = 1000000): number {
   const num = parseInt(hash.substring(0, 12), 16);
   return num % max;
 }
+export const updateEditorStyle = (styleProps?: React.CSSProperties) => {
+  const cssStyle: Record<string, any> = {};
+  if (styleProps) {
+    for (const [key, value] of Object.entries(styleProps)) {
+      const cssKey = key.replace(/([A-Z])/g, (match) => `-${match.toLowerCase()}`);
+      cssStyle[cssKey] = value;
+    }
+  }
+  return cssStyle;
+};

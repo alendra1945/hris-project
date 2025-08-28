@@ -88,7 +88,20 @@ export const useDetailReportTemplateQuery = (id?: string) => {
     queryKey: ['get-detail-report-template', id],
     enabled: !!id,
     queryFn: async () => {
-      const { data, error } = await fetchClientQuery<ReportTemplateFromApi>({
+      const { data, error } = await fetchClientQuery<
+        ReportTemplateFromApi & {
+          id: string;
+          source: {
+            elements: Record<string, any>[];
+            footers: Record<string, any>;
+            headers: Record<string, any>;
+            watermark: Record<string, any>;
+          };
+          metadata: {
+            page_settings: Record<string, any>;
+          };
+        }
+      >({
         url: `/reporting-template/${id}`,
         method: 'GET',
       });

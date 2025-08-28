@@ -3,9 +3,10 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { ReportTemplateFromApi } from '@/hooks/use-report-template-query';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent } from '../ui/dropdown-menu';
-import { EllipsisVertical, PenIcon, Trash } from 'lucide-react';
+import { EllipsisVertical, NotebookText, PenIcon, Trash } from 'lucide-react';
 import dayjs from 'dayjs';
 import { useModal } from '@/hooks/use-modal-store';
+import { useRouter } from 'next/navigation';
 
 export const defaultColums: ColumnDef<ReportTemplateFromApi>[] = [
   {
@@ -87,6 +88,7 @@ export const defaultColums: ColumnDef<ReportTemplateFromApi>[] = [
           },
         });
       };
+      const router = useRouter();
       const onEdit = () => {
         onOpen('createReportTemplate', {
           reportTemplateData: {
@@ -101,6 +103,14 @@ export const defaultColums: ColumnDef<ReportTemplateFromApi>[] = [
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent className='shadow-none border-none rounded-sm'>
+            <DropdownMenuItem
+              onClick={() => {
+                router.push(`/reporting-template/${row.original.id}/templates`);
+              }}
+            >
+              <NotebookText className='size-4' />
+              View Template
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={onEdit}>
               <PenIcon className='size-4' />
               Edit
